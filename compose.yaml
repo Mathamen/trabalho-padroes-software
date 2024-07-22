@@ -10,6 +10,8 @@
 name: me-hungry
 services:
   orders_backend:
+    container_name: orders_backend
+    image: orders_backend
     build:
       context: ./backend
     depends_on:
@@ -33,6 +35,8 @@ services:
           action: sync
 
   frontend:
+    image: frontend
+    container_name: frontend
     build:
       context: ./frontend
     environment:
