@@ -9,11 +9,11 @@
 # You can add other services your application may depend on here.
 name: me-hungry
 services:
-  backend:
+  orders_backend:
     build:
       context: ./backend
-    # depends_on:
-    #   - todo-database
+    depends_on:
+      - postgres
     environment:
       NODE_ENV: production
       POSTGRES_USER: postgres
@@ -29,8 +29,25 @@ services:
         - path: ./backend/package.json
           action: rebuild
         - path: ./backend
-          target: /usr/src/backend
+          target: /usr/src/app
           action: sync
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      NODE_ENV: production
+      DEBUG: True
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: .frontend/
+          target: /usr/src/app
+          action: sync
+
 
   postgres:
     image: postgres:13
