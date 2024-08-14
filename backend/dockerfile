@@ -9,7 +9,7 @@ COPY package*.json ./
 # Run npm install
 RUN npm install
 
-# Bundel app source
+# Bundle app source
 COPY . .
 
 EXPOSE 8080
