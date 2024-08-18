@@ -1,16 +1,20 @@
 FROM node:18-alpine
 
 # Create app directory
-WORKDIR /app
+WORKDIR /backend
 
 # Install app dependencies
-COPY package*.json ./
+COPY package.json /backend/package.json
+COPY package-lock.json /backend/package-lock.json
 
 # Run npm install
-RUN npm install
+RUN npm install && npm ls
 
-# Bundel app source
-COPY . .
+# Move node_modules wher it should be
+RUN mv /backend/node_modules /node_modules
+
+# Bundle app source
+COPY . /backend
 
 EXPOSE 8080
 
