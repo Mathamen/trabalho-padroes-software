@@ -1,12 +1,4 @@
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Docker compose reference guide at
-# https://docs.docker.com/compose/compose-file/
-
-# Here the instructions define your application as two services called "todo-app" and “todo-database”
-# The service “todo-app” is built from the Dockerfile in the /app directory,
-# and the service “todo-database” uses the official MongoDB image 
-# from Docker Hub - https://hub.docker.com/_/mongo. 
-# You can add other services your application may depend on here.
+version: '3'
 name: me-hungry
 services:
   orders_backend:
@@ -33,6 +25,16 @@ services:
         - path: ./backend
           target: /usr/src/app
           action: sync
+    volumes:
+      - ./backend:/backend
+    deploy:
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 1G
+        reservations:
+          cpus: '0.001'
+          memory: 500M
 
   frontend:
     image: frontend
@@ -51,8 +53,15 @@ services:
         - path: .frontend/
           target: /usr/src/app
           action: sync
-
-
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.7'
+          memory: 700M
+          
   postgres:
     image: postgres:13
     container_name: postgres_database
@@ -65,6 +74,12 @@ services:
     networks:
       - me_hungry_network
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
 
   pgadmin:
     image: dpage/pgadmin4
@@ -78,6 +93,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: 123456
     networks:
       - me_hungry_network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 250M
+        reservations:
+          cpus: '0.001'
+          memory: 150M
  
 networks:
   me_hungry_network:
