@@ -1,0 +1,6 @@
+table{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+	padding: 1vh 1vh 1vh 1vh;
+}
