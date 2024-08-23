@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './home.css';
 
 import carrinho from '../../images/Carrinho.png';
@@ -13,10 +14,10 @@ const Home = () => {
       <tbody>
       <tr>
         <td>
-          <button className='btn btn-light' id="fazerPedidoBtn">
+          <button className='btn btn-light' id="fazerPedidoBtn"><Link to="/delivery">
             <img src={pedir}></img>
             <h4>Realizar Pedido</h4>
-          </button>
+            </Link></button>
         </td>
         <td>
           <button className='btn btn-light' id="carrinhoBtn">
