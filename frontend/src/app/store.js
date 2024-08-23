@@ -1,17 +1,8 @@
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import clientReducer from './reducers/clientReducer';
+import clientReducer from '../features/reducers/ClientReducer';
+import { configureStore } from '@reduxjs/toolkit';
 
-const rootReducer = combineReducers({
-  client: clientReducer,
+export const store = configureStore({
+    reducer:{
+        client: clientReducer,
+    }
 });
-
-const store = createStore(rootReducer);
-
-const AppProvider = ({ children }) => (
-  <Provider store={store}>
-    {children}
-  </Provider>
-);
-
-export { store, AppProvider };
