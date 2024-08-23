@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app1:
+    image: your_custom_app1_image_with_db
+    environment:
+      - POSTGRES_USER=app1_user
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_DB=app1_db
+    ports:
+      - "8081:80"
+    command: >
+      sh -c "service postgresql start && your_app_start_command"
+
+  app2:
+    image: your_custom_app2_image_with_db
+    environment:
+      - POSTGRES_USER=app2_user
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_DB=app2_db
+    ports:
+      - "8082:80"
+    command: >
+      sh -c "service postgresql start && your_app_start_command"
