@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export default function CardRestaurante(props)
 {
@@ -11,6 +12,10 @@ export default function CardRestaurante(props)
                 <div className="col-md-8">{/*O restante para as demais informacoes*/}
                     <h5 className="card-title">{props.nome} - {props.bairro}</h5>
                     <p className="card-text">{props.categoria} | {props.distancia} Km</p>
+
+                    <Link to="/restaurante" state={props}> {/*Passagem do restaurante atraves de state. Claro que com Redux isso vai mudar, mas dando uma ideia*/}
+                      <button className='btn btn-primary'>Ver restaurante</button>
+                    </Link>
                 </div>
             </div>
         </div>

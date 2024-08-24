@@ -2,6 +2,9 @@ import React from "react";
 import LogoTeste from '../../../images/logo2.png';
 
 import CardProduto from "./CardProduto";
+import {Link, useLocation} from 'react-router-dom';
+
+
 const produtos = [
     {
         nomeProduto : "Pizza de calabresa família",
@@ -25,17 +28,23 @@ const produtos = [
 
 export default function PageRestauranteEscolhido()
 {
+    const hist = useLocation();
+    const restauranteState = hist.state || {logo: LogoTeste, nome: "Nome teste"}; //Esse ou é só pra garantir
+//Que se alguem abrir essa page antes de delivery não caia em um erro de nullReference
+    console.log(restauranteState);
     return(
         <main className='container'>
             <div className="row">
                 <div className="col-md-1">
-                    <img src={LogoTeste} className="img-thumbnail"/>
+                    <img src={restauranteState.logo} className="img-thumbnail"/>
                 </div>
                 <div className="col-md-11">
-                    <h2>O Nome Do Restaurante</h2>
+                    <h2>{restauranteState.nome}</h2>
                 </div>
             </div>
+            
             <br/><br/>
+
             <div className="row">
                 <div className="col-md-6">
                     <h1>Escolha sua refeicao: </h1>
@@ -44,8 +53,10 @@ export default function PageRestauranteEscolhido()
                     <input type="text" placeholder="busque no cardápio..." className="input-group"></input>
                 </div>
             </div>
+
             <hr />
-            <div className='row'>
+
+            <div className='row'>{/*Lembrar de fazer map apenas dos produtos que tem referencia ao restaurante*/}
                     {produtos.map((produto) =>
                         <CardProduto {...produto} />
                     )}
