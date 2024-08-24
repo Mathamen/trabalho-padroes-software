@@ -1,7 +1,7 @@
-# app/models.py
 from sqlalchemy import Column, Integer, String
 from .database import Base
 
+# Criação de modelos a partir da base do sqlalchemy
 class Item(Base):
     __tablename__ = "items"
 

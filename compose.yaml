@@ -1,114 +1,107 @@
-name: me-hungry
+name: euComida
 services:
-  orders_backend:
-    container_name: orders_backend
-    image: orders_backend
+  orders:
+    container_name: orders
+    image: orders
     build:
-      context: ./backend
-      dockerfile: ./dockerfile
-    depends_on:
-      - postgres
-    environment:
-      NODE_ENV: production
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: me_hungry
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      DEBUG: True
-    ports:
-      - 8080:8080
-    develop:
-      watch:
-        - path: ./backend/package.json
-          action: rebuild
-        - path: ./backend
-          target: /usr/src/app
-          action: sync
-    volumes:
-      - ./backend:/backend
-    deploy:
-      resources:
-        limits:
-          cpus: '0.01'
-          memory: 1G
-        reservations:
-          cpus: '0.001'
-          memory: 500M
-
-  frontend:
-    image: frontend
-    container_name: frontend
-    build:
-      context: ./frontend
+      context: ./Orders
       dockerfile: ./dockerfile
     environment:
       NODE_ENV: production
       DEBUG: True
     ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/frontend
+      - 8000:8000
     develop:
       watch:
-        - path: ./frontend/package.json
+        - path: ./Orders/requirements.txt
           action: rebuild
-        - path: ./frontend/src
-          target: /frontend/src
+        - path: ./Orders
+          target: /app
           action: sync
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 1G
-        reservations:
-          cpus: '0.7'
-          memory: 700M
-          
-  postgres:
-    image: postgres:13
-    container_name: postgres_database
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: me_hungry
+      - ./Orders:/app
+      - orders_data:/app/data/
+      - /app/App/__pycache__/
     networks:
-      - me_hungry_network
-    restart: unless-stopped
+      - euComida_network
     deploy:
       resources:
         limits:
-          memory: 4G
-        reservations:
-          memory: 2G
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: 123456
-    networks:
-      - me_hungry_network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.01'
+          cpus: '0.5'
           memory: 250M
         reservations:
-          cpus: '0.001'
-          memory: 150M
- 
+          cpus: '0.1'
+          memory: 50M
+  consumers:
+    container_name: consumers
+    image: consumers
+    build:
+      context: ./Consumers
+      dockerfile: ./dockerfile
+    environment:
+      NODE_ENV: production
+      DEBUG: True
+    ports:
+      - 8002:8002
+    develop:
+      watch:
+        - path: ./Consumers/requirements.txt
+          action: rebuild
+        - path: ./Consumers
+          target: /app
+          action: sync
+    volumes:
+      - ./Consumers:/app
+      - consumers_data:/app/data/
+      - /app/App/__pycache__/
+    networks:
+      - euComida_network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 250M
+        reservations:
+          cpus: '0.1'
+          memory: 50M
+  restaurants:
+    container_name: restaurants
+    image: restaurants
+    build:
+      context: ./Restaurants
+      dockerfile: ./dockerfile
+    environment:
+      NODE_ENV: production
+      DEBUG: True
+    ports:
+      - 8001:8001
+    develop:
+      watch:
+        - path: ./Restaurants/requirements.txt
+          action: rebuild
+        - path: ./Restaurants
+          target: /app
+          action: sync
+    volumes:
+      - ./Restaurants:/app
+      - restaurants_data:/app/data/
+      - /app/App/__pycache__/
+    networks:
+      - euComida_network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 250M
+        reservations:
+          cpus: '0.1'
+          memory: 50M
+
 networks:
-  me_hungry_network:
+  euComida_network:
     driver: bridge
  
 volumes:
-  postgres_data:
-  pgadmin_data:
+  orders_data:
+  consumers_data:
+  restaurants_data:
