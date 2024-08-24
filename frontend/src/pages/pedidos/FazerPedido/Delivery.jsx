@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import CardRestaurante from "./CardRestaurante.jsx";
+import CardRestaurante from "../../../Components/CardRestaurante/CardRestaurante.jsx";
 import logoTeste from "../../../images/logo2.png";
 
 const restaurantes = [ //Apenas para que eu possa ver o design. Depois podemos deletar
@@ -17,7 +17,7 @@ const restaurantes = [ //Apenas para que eu possa ver o design. Depois podemos d
       cnpj : "83.745.085/0001-64",
       nome: "Mercadinho + Barato",
       categoria: "mercado",
-      bairro: "Vila Nova",
+      bairro: "Vila Velha",
       logo: logoTeste,
       distancia: 3.5
     },

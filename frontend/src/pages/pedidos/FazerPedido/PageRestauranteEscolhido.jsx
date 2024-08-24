@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState, useEffect } from "react";
 import LogoTeste from '../../../images/logo2.png';
 
-import CardProduto from "./CardProduto";
+import CardProduto from "../../../Components/ItemCardapio/CardProduto.jsx";
 import {Link, useLocation} from 'react-router-dom';
 
 
@@ -31,6 +31,12 @@ export default function PageRestauranteEscolhido()
     const hist = useLocation();
     const restauranteState = hist.state || {logo: LogoTeste, nome: "Nome teste"}; //Esse ou é só pra garantir
 //Que se alguem abrir essa page antes de delivery não caia em um erro de nullReference
+
+    const [buscaNome, setBuscaNome] = useState('');
+
+    const produtosFiltrados = produtos.filter((prod) =>
+        prod.nomeProduto.toLowerCase().includes(buscaNome.toLowerCase())
+    );
     console.log(restauranteState);
     return(
         <main className='container'>
@@ -50,14 +56,15 @@ export default function PageRestauranteEscolhido()
                     <h1>Escolha sua refeicao: </h1>
                 </div>
                 <div className="col-md-6">
-                    <input type="text" placeholder="busque no cardápio..." className="input-group"></input>
+                    <input type="text" value={buscaNome} onChange={(e) => {setBuscaNome(e.target.value)}}
+                     placeholder="busque no cardápio..." className="input-group"></input>
                 </div>
             </div>
 
             <hr />
 
             <div className='row'>{/*Lembrar de fazer map apenas dos produtos que tem referencia ao restaurante*/}
-                    {produtos.map((produto) =>
+                    {produtosFiltrados.map((produto) =>
                         <CardProduto {...produto} />
                     )}
             </div>
