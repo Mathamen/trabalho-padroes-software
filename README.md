@@ -1,5 +1,11 @@
-# trabalho-padroes-software
+# Trabalho de Arquitetura e Padrões de Software (EUcomida)
 
 ## Como rodar:
 
-`docker compose up -d --build`
+`cd Frontend`
+`npm run docker-start`
+
+## Caso prefira rodar só o frontend:
+
+`cd Frontend`
+`npm start`

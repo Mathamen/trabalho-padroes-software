@@ -1,8 +1,0 @@
-{
-  "watch": ["."],
-  "ignore": ["node_modules/*","package*.json"],
-  "exec": "npx node server.js",
-  "ext": "js,json",
-  "legacyWatch": true
-}
-  
