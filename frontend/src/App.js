@@ -8,6 +8,7 @@ import Pedidos from './pages/pedidos/pedidos';
 import CreateCliente from './pages/clienteview/createcliente/CreateCliente.jsx';
 import PerfilCliente from './pages/clienteview/perfilcliente/PerfilCliente.jsx';
 import Delivery from './pages/pedidos/FazerPedido/Delivery.jsx';
+import PageRestauranteEscolhido from './pages/pedidos/FazerPedido/PageRestauranteEscolhido.jsx';
 
 import {store} from './app/store';
 import { Provider } from 'react-redux';
@@ -35,6 +36,7 @@ function App() {
             <Route path="/pedidos" element={states.pedidos === 'online' ? <Pedidos /> : <div>Pedidos is offline</div>} />
             <Route path="/profile" element={<PerfilCliente />} />
             <Route path="/delivery" element={<Delivery />} />
+            <Route path="/restaurante" element={<PageRestauranteEscolhido />} />
           </Routes>
         </Router>
       </Provider>
