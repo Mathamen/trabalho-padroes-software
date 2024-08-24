@@ -9,7 +9,7 @@ import CreateCliente from './pages/clienteview/createcliente/CreateCliente.jsx';
 import PerfilCliente from './pages/clienteview/perfilcliente/PerfilCliente.jsx';
 import Delivery from './pages/pedidos/FazerPedido/Delivery.jsx';
 import PageRestauranteEscolhido from './pages/pedidos/FazerPedido/PageRestauranteEscolhido.jsx';
-
+import Carrinho from './pages/Carrinho/Carrinho.jsx';
 import {store} from './app/store';
 import { Provider } from 'react-redux';
 
@@ -37,6 +37,7 @@ function App() {
             <Route path="/profile" element={<PerfilCliente />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/restaurante" element={<PageRestauranteEscolhido />} />
+            <Route path="/carrinho" element={<Carrinho />} />
           </Routes>
         </Router>
       </Provider>

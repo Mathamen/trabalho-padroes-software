@@ -20,10 +20,10 @@ const Home = () => {
             </Link></button>
         </td>
         <td>
-          <button className='btn btn-light' id="carrinhoBtn">
+          <button className='btn btn-light' id="carrinhoBtn"><Link to="/carrinho">
             <img src={carrinho}></img>
             <h4>Seu carrinho</h4>
-          </button>
+            </Link></button>
         </td>
       </tr> 
       <tr>
