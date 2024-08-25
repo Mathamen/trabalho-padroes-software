@@ -1,4 +1,4 @@
-name: euComida
+name: eucomida
 services:
   orders:
     container_name: orders
