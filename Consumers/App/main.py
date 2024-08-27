@@ -19,26 +19,26 @@ def get_db():
     finally:
         db.close()
 
-@app.put("/items/", response_model=schemas.Item)
-def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    return crud.create_item(db=db, item=item)
+@app.post("/clients/", response_model=schemas.Client)
+def create_client(client: schemas.ClientCreate, db: Session = Depends(get_db)):
+    return crud.create_client(db=db, client=client)
 
-@app.get("/items/{item_id}", response_model=schemas.Item)
-def read_item(item_id: int, db: Session = Depends(get_db)):
-    db_item = crud.get_item(db, item_id=item_id)
-    if db_item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return db_item
+@app.get("/clients/{client_id}", response_model=schemas.Client)
+def read_client(client_id: int, db: Session = Depends(get_db)):
+    db_client = crud.get_client(db, client_id=client_id)
+    if db_client is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return db_client
 
-@app.post("/items/{item_id}", response_model=schemas.Item)
-def update_item(item_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    db_item = crud.update_item(db, item_id=item_id, item=item)
-    if db_item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return db_item
+@app.put("/clients/{client_id}", response_model=schemas.Client)
+def update_client(client_id: int, client: schemas.ClientCreate, db: Session = Depends(get_db)):
+    db_client = crud.update_client(db, client_id=client_id, client=client)
+    if db_client is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return db_client
 
-@app.delete("/items/{item_id}", response_model=schemas.Item)
-def delete_item(item_id: int, db: Session = Depends(get_db)):
-    if crud.delete_item(db, item_id=item_id):
-        return JSONResponse(content= {"message":f"item {item_id}: deleted successfully"})
-    raise HTTPException(status_code=404, detail="Item not found")
+@app.delete("/clients/{client_id}", response_model=schemas.Client)
+def delete_client(client_id: int, db: Session = Depends(get_db)):
+    if crud.delete_client(db, client_id=client_id):
+        return JSONResponse(content= {"message":f"client {client_id}: deleted successfully"})
+    raise HTTPException(status_code=404, detail="Client not found")
