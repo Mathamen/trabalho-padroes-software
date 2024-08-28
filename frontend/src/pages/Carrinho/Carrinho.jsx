@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
+
 import LogoTeste from '../../images/logo2.png';
+import CardCarrinho from "../../Components/CardCarrinho/CardCarrinho";
 
 export default function Carrinho()
 {
@@ -19,22 +21,28 @@ export default function Carrinho()
         {
             cnpjRestaurante : "00000", 
             nomeProduto: "Mineirinho 2L",
+            descricao: "Descricao super elaborada",
             preco : 9,
             logo : LogoTeste
         },
         {
             cnpjRestaurante : "111111", 
             nomeProduto: "Churros de chocolate",
+            descricao: "Descricao super elaborada",
             preco : 5,
             logo : LogoTeste
         },
         {
             cnpjRestaurante : "00000", 
             nomeProduto: "Pizza de 4 queijos",
+            descricao: "Descricao super elaborada",
             preco : 15,
             logo : LogoTeste
         }
     ];
+
+    //const [precoTotal, setPrecoTotal] = useState(0);
+
     return(
         <div className="container">
             <h2>Seu Carrinho: </h2>
@@ -49,11 +57,13 @@ export default function Carrinho()
                     </div>
                     
                 </div>
+                <br />
                 <div className="row g-3">
                 {produtosPedidos
                     .filter((produto) => produto.cnpjRestaurante === restaurante.cnpj)
                     .map((prod) => (
-                    <h6 key={prod.nomeProduto}>{prod.nomeProduto}</h6>
+                    <CardCarrinho {...prod} />
+                    
                 ))}
                 </div>
 

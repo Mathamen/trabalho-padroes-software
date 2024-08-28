@@ -24,10 +24,3 @@ export default function CardProduto(props)
     );
 }
 
-/*Acho que vou inserir esse trecho no card do carrinho. Assim, o usuario so define a quantidade na hora de fechar o pedido
-<div className="input-group col-md-6">  |-| 1 |+|
-    <button className="btn btn-outline-secondary" id="MenosQuantidade" type="button">-</button>                       
-    <input readOnly defaultValue={1} className="formControl" id="QuantidadeProduto"></input>
-    <button className="btn btn-outline-secondary" id="MaisQuantidade" type="button">+</button>
-</div>
-*/

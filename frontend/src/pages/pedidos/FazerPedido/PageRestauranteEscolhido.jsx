@@ -2,7 +2,7 @@ import React, {useState, useEffect } from "react";
 import LogoTeste from '../../../images/logo2.png';
 
 import CardProduto from "../../../Components/ItemCardapio/CardProduto.jsx";
-import {Link, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 
 const produtos = [
