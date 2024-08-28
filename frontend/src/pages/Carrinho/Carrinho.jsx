@@ -41,8 +41,12 @@ export default function Carrinho()
         }
     ];
 
-    //const [precoTotal, setPrecoTotal] = useState(0);
-
+    const [precoTotal, setPrecoTotal] = useState(0);
+    let total = 0;
+    produtosPedidos.forEach(element => {
+        total += (element.preco);
+    });
+    
     return(
         <div className="container">
             <h2>Seu Carrinho: </h2>
@@ -63,14 +67,14 @@ export default function Carrinho()
                     .filter((produto) => produto.cnpjRestaurante === restaurante.cnpj)
                     .map((prod) => (
                     <CardCarrinho {...prod} />
-                    
+                   
                 ))}
                 </div>
 
             </>   
             )}
 
-            <button className="btn btn-primary">Fechar pedido em: </button>
+            <button className="btn btn-primary">Fechar pedido em: {total}</button>
         </div>
     );
 }
