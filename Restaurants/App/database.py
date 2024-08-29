@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 #cria arquivo .db na raiz, use o nome que quiser
-SQLALCHEMY_DATABASE_URL = "sqlite:///./data/.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./data/cardapio.db"
 
 # Inicialização do banco de dados
 engine = create_engine(
