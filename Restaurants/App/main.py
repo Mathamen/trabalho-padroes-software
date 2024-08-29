@@ -1,15 +1,28 @@
 # A main é onde as requisições http são tratadas
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from . import models, schemas, crud, database
-
 
 #instanciação de tabelas baseadas nos modelos declarados
 models.Base.metadata.create_all(bind=database.engine)
 
 # Criação do app
 app = FastAPI()
+
+#middleware CORS
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependência para acessar a sessão do banco de dados
 def get_db():
@@ -18,6 +31,10 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@app.get("/")
+def ping_response():
+    return JSONResponse(content={},status_code=200)
 
 @app.post("/items/", response_model=schemas.Item)
 def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):

@@ -13,18 +13,34 @@ import Carrinho from './pages/Carrinho/Carrinho.jsx';
 import {store} from './app/store';
 import { Provider } from 'react-redux';
 
-
+function ping(){
+  let urls = [
+    {"url":'http://localhost:8000',
+      "name":'orders',
+    },
+    {"url":'http://localhost:8001',
+      "name":'restaurant_items',
+    },
+    {"url":'http://localhost:8002',
+      "name":'users',
+    },
+  ]
+  const fetchPromises = urls.map(url =>
+    fetch(url.url).then(response => {
+      console.log(`ping ${url.name}:`);
+      if (response.status === 200) {
+        console.log('success');
+      } else {
+        console.log('internal server error');
+      }
+    })
+    .catch(()=>console.error(`${url.name} is offline`))
+  );
+}
 
 function App() {
-    const [states, setStatus] = useState({ home: 'online', pedidos: 'online' });
-
-  useEffect(() => {
-    fetch('/states.json')
-      .then(response => response.json())
-      .then(data => setStatus(data))
-      .catch(error => console.error('Error fetching status:', error));
-  }, []);
-
+    const [states, setStatus] = useState({ home: 'offline', pedidos: 'offline' });
+    useEffect(()=>ping())
   return (
     <div>
       <Provider store={store}>
@@ -33,7 +49,7 @@ function App() {
           <Routes>
             <Route path="/" element={<CreateCliente />} />
             <Route path="/home" element={states.home === 'online' ? <Home /> : <div>Home is offline</div>} />
-            <Route path="/pedidos" element={states.pedidos === 'online' ? <Pedidos /> : <div>Pedidos is offline</div>} />
+            <Route path="/pedidos" element={states.pedidos === 'online' ? <Pedidos /> : <div>Pedidos is {states.pedidos}</div>} />
             <Route path="/profile" element={<PerfilCliente />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/restaurante" element={<PageRestauranteEscolhido />} />
