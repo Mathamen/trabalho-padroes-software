@@ -23,7 +23,7 @@ services:
       - orders_data:/app/data/
       - /app/App/__pycache__/
     networks:
-      - euComida_network
+      - eu_comida_network
     deploy:
       resources:
         limits:
@@ -32,9 +32,9 @@ services:
         reservations:
           cpus: '0.1'
           memory: 50M
-  consumers:
-    container_name: consumers
-    image: consumers
+  users:
+    container_name: users
+    image: users
     build:
       context: ./Consumers
       dockerfile: ./dockerfile
@@ -55,7 +55,7 @@ services:
       - consumers_data:/app/data/
       - /app/App/__pycache__/
     networks:
-      - euComida_network
+      - eu_comida_network
     deploy:
       resources:
         limits:
@@ -64,9 +64,9 @@ services:
         reservations:
           cpus: '0.1'
           memory: 50M
-  restaurants:
-    container_name: restaurants
-    image: restaurants
+  restaurant_items:
+    container_name: restaurant_items
+    image: restaurants_items
     build:
       context: ./Restaurants
       dockerfile: ./dockerfile
@@ -87,7 +87,7 @@ services:
       - restaurants_data:/app/data/
       - /app/App/__pycache__/
     networks:
-      - euComida_network
+      - eu_comida_network
     deploy:
       resources:
         limits:
@@ -98,7 +98,7 @@ services:
           memory: 50M
 
 networks:
-  euComida_network:
+  eu_comida_network:
     driver: bridge
  
 volumes:
