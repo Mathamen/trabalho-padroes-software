@@ -36,3 +36,39 @@ def delete_client(db: Session, client_id: int):
     db.delete(db_client)
     db.commit()
     return True #no errors
+
+
+def get_restaurant(db: Session, restaurant_id: int):
+    return db.query(models.Restaurant).filter(models.Restaurant.id == restaurant_id).first()
+
+def create_restaurant(db: Session, restaurant: schemas.RestaurantCreate):
+    db_restaurant = models.Restaurant(
+        name=restaurant.name, 
+        email=restaurant.email,
+        cnpj=restaurant.cnpj,
+        phone_number=restaurant.phone_number,
+        address=restaurant.address,
+        password=restaurant.password
+    )
+    db.add(db_restaurant)
+    db.commit()
+    db.refresh(db_restaurant)
+    return db_restaurant
+
+def update_restaurant(db: Session, restaurant_id: int, restaurant: schemas.RestaurantCreate):
+    db_restaurant= db.query(models.Restaurant).filter(models.Restaurant.id == restaurant_id).first()
+    if db_restaurant is None:
+        return None
+    db_restaurant.name = restaurant.name
+    db_restaurant.description = restaurant.description
+    db.commit()
+    db.refresh(db_restaurant)
+    return db_restaurant
+
+def delete_restaurant(db: Session, restaurant_id: int):
+    db_restaurant = db.query(models.Restaurant).filter(models.Restaurant.id == restaurant_id).first()
+    if db_restaurant == None:
+        return False #error ocurred
+    db.delete(db_restaurant)
+    db.commit()
+    return True #no errors

@@ -42,3 +42,30 @@ def delete_client(client_id: int, db: Session = Depends(get_db)):
     if crud.delete_client(db, client_id=client_id):
         return JSONResponse(content= {"message":f"client {client_id}: deleted successfully"})
     raise HTTPException(status_code=404, detail="Client not found")
+
+
+#restaurant
+
+@app.post("/restaurants/", response_model=schemas.Restaurant)
+def create_restaurant(restaurant: schemas.RestaurantCreate, db: Session = Depends(get_db)):
+    return crud.create_restaurant(db=db, restaurant=restaurant)
+
+@app.get("restaurants/{restaurant_id}", response_model=schemas.Restaurant)
+def read_restaurant(restaurant_id: int, db: Session = Depends(get_db)):
+    db_restaurant = crud.get_restaurant(db, restaurant_id=restaurant_id)
+    if db_restaurant is None:
+        raise HTTPException(status_code=404, detail="Restaurant not found")
+    return db_restaurant
+
+@app.put("/restaurants/{restaurant_id}", response_model=schemas.Restaurant)
+def update_restaurant(restaurant_id: int, restaurant: schemas.RestaurantCreate, db: Session = Depends(get_db)):
+    db_restaurant= crud.update_restaurant(db, restaurant_id=restaurant_id, restaurant=restaurant)
+    if db_restaurant is None:
+        raise HTTPException(status_code=404, detail="Restaurant not found")
+    return db_restaurant
+
+@app.delete("/restaurants/{restaurant_id}", response_model=schemas.Restaurant)
+def delete_restaurant(restaurant_id: int, db: Session = Depends(get_db)):
+    if crud.delete_restaurant(db, restaurant_id=restaurant_id):
+        return JSONResponse(content= {"message":f"restaurant {restaurant_id}: deleted successfully"})
+    raise HTTPException(status_code=404, detail="Restaurant not found")

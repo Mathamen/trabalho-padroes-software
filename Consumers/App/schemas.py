@@ -17,7 +17,24 @@ class ClientCreate(ClientBase):
 #item efetivo e auto indexado por int em ordem crescente
 class Client(ClientBase):
     id: int
-    password: str 
+
+    class Config:
+        orm_mode = True
+
+#restaurant
+
+class RestaurantBase(BaseModel):
+    name: str
+    email: str
+    cnpj: str
+    phone_number: str
+    address: str
+
+class RestaurantCreate(RestaurantBase):
+    password: str
+
+class Restaurant(RestaurantBase):
+    id: int 
 
     class Config:
         orm_mode = True
