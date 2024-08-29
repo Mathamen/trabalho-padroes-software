@@ -14,6 +14,13 @@ class ClientBase(BaseModel):
 class ClientCreate(ClientBase):
     password: str
 
+class ClientUpdate(BaseModel):
+    name: Optional[str]
+    email: Optional[str]
+    cpf: Optional[str]
+    phone_number: Optional[str]
+    address: Optional[str]
+
 #item efetivo e auto indexado por int em ordem crescente
 class Client(ClientBase):
     id: int
@@ -32,6 +39,13 @@ class RestaurantBase(BaseModel):
 
 class RestaurantCreate(RestaurantBase):
     password: str
+
+class RestaurantUpdate(BaseModel):
+    name: Optional[str]
+    email: Optional[str]
+    cnpj: Optional[str]
+    phone_number: Optional[str]
+    address: Optional[str]
 
 class Restaurant(RestaurantBase):
     id: int 

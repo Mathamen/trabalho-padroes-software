@@ -19,12 +19,12 @@ def create_client(db: Session, client: schemas.ClientCreate):
     db.refresh(db_client)
     return db_client
 
-def update_client(db: Session, client_id: int, client: schemas.ClientCreate):
+def update_client(db: Session, client_id: int, client: schemas.ClientUpdate):
     db_client= db.query(models.Client).filter(models.Client.id == client_id).first()
     if db_client is None:
         return None
-    db_client.name = client.name
-    db_client.description = client.description
+    for key, value in client.dict(exclude_unset=True).items():
+        setattr(db_client, key, value)
     db.commit()
     db.refresh(db_client)
     return db_client
@@ -55,12 +55,12 @@ def create_restaurant(db: Session, restaurant: schemas.RestaurantCreate):
     db.refresh(db_restaurant)
     return db_restaurant
 
-def update_restaurant(db: Session, restaurant_id: int, restaurant: schemas.RestaurantCreate):
+def update_restaurant(db: Session, restaurant_id: int, restaurant: schemas.RestaurantUpdate):
     db_restaurant= db.query(models.Restaurant).filter(models.Restaurant.id == restaurant_id).first()
     if db_restaurant is None:
         return None
-    db_restaurant.name = restaurant.name
-    db_restaurant.description = restaurant.description
+    for key, value in restaurant.dict(exclude_unset=True).items():
+        setattr(db_restaurant, key, value)
     db.commit()
     db.refresh(db_restaurant)
     return db_restaurant
