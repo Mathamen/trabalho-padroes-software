@@ -36,7 +36,7 @@ services:
     container_name: users
     image: users
     build:
-      context: ./Consumers
+      context: ./Users
       dockerfile: ./dockerfile
     environment:
       NODE_ENV: production
@@ -45,14 +45,14 @@ services:
       - 8002:8002
     develop:
       watch:
-        - path: ./Consumers/requirements.txt
+        - path: ./Users/requirements.txt
           action: rebuild
-        - path: ./Consumers
+        - path: ./Users
           target: /app
           action: sync
     volumes:
-      - ./Consumers:/app
-      - consumers_data:/app/data/
+      - ./Users:/app
+      - users_data:/app/data/
       - /app/App/__pycache__/
     networks:
       - eu_comida_network
@@ -66,9 +66,9 @@ services:
           memory: 50M
   restaurant_items:
     container_name: restaurant_items
-    image: restaurants_items
+    image: restaurant_items
     build:
-      context: ./Restaurants
+      context: ./Restaurant_items
       dockerfile: ./dockerfile
     environment:
       NODE_ENV: production
@@ -77,14 +77,14 @@ services:
       - 8001:8001
     develop:
       watch:
-        - path: ./Restaurants/requirements.txt
+        - path: ./Restaurant_items/requirements.txt
           action: rebuild
-        - path: ./Restaurants
+        - path: ./Restaurant_items
           target: /app
           action: sync
     volumes:
-      - ./Restaurants:/app
-      - restaurants_data:/app/data/
+      - ./Restaurant_items:/app
+      - restaurant_items_data:/app/data/
       - /app/App/__pycache__/
     networks:
       - eu_comida_network
@@ -103,5 +103,5 @@ networks:
  
 volumes:
   orders_data:
-  consumers_data:
-  restaurants_data:
+  users_data:
+  restaurant_items_data:

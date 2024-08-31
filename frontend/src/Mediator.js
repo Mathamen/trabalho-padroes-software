@@ -39,7 +39,7 @@ export class Mediator{
                 result = this.PASSWORD_INCORRECT;
             }else if(response.status === 200){
                 result = response.json();
-                this.sessionToken = result['sessionToken']
+                this.sessionToken = result['sessionToken'];
             }
         });
         return result;
