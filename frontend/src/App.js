@@ -12,35 +12,18 @@ import PageRestauranteEscolhido from './pages/pedidos/FazerPedido/PageRestaurant
 import Carrinho from './pages/Carrinho/Carrinho.jsx';
 import {store} from './app/store';
 import { Provider } from 'react-redux';
-
-function ping(){
-  let urls = [
-    {"url":'http://localhost:8000',
-      "name":'orders',
-    },
-    {"url":'http://localhost:8001',
-      "name":'restaurant_items',
-    },
-    {"url":'http://localhost:8002',
-      "name":'users',
-    },
-  ]
-  const fetchPromises = urls.map(url =>
-    fetch(url.url).then(response => {
-      console.log(`ping ${url.name}:`);
-      if (response.status === 200) {
-        console.log('success');
-      } else {
-        console.log('internal server error');
-      }
-    })
-    .catch(()=>console.error(`${url.name} is offline`))
-  );
-}
+import { Mediator } from './Mediator.js';
 
 function App() {
     const [states, setStatus] = useState({ home: 'offline', pedidos: 'offline' });
-    useEffect(()=>ping())
+    //TO DO: trocar esse json pra estados separados, tlvz até abandonar tudo e fazer um reducer direito
+    Mediator.ping(Mediator.USERS).then(result=>{
+      if(result === Mediator.SERVER_ERROR){
+        console.error("algo de errado no servidor");
+      }else if(result === Mediator.ONLINE){
+        setStatus({home:'online', pedidos: 'offline'})
+      }
+    });
   return (
     <div>
       <Provider store={store}>
