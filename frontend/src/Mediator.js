@@ -1,20 +1,29 @@
+
+//TO DO: implementar no back as lógicas
+
 export class Mediator{
+    //valores possíveis de retorno
     static ONLINE = 0;
     static OFFLINE = 1;
     static SERVER_ERROR = 2;
-    static USER_NOT_FOUND = 3;
+    static NOT_FOUND = 3;
     static PASSWORD_INCORRECT = 4;
     static ALREADY_EXISTS = 5;
     static INVALID_SESSION = 6;
     static DELETED_SUCCESSFULLY = 7;
+    static LOGGED_IN = 8;
+    static LOADING = 9;
+    static UPDATED = 10;
+    //URLs dos microserviços 
     static ORDERS = "http://localhost:8000";
     static RESTAURANT_ITEMS = "http://localhost:8001";
     static USERS = "http://localhost:8002";
-    static sessionToken = ""; 
+    static user_id = null;
 
+
+    //ping para verificar estado do microserviço
     static ping(url){
         return fetch(url).then(response => {
-            console.log(`ping ${url}:`);
             if (response.status === 200) {
               return this.ONLINE;
             } else {
@@ -23,10 +32,10 @@ export class Mediator{
         })
         .catch(()=>{return this.OFFLINE});
     }
-    //TO DO: consertar todas as funções abaixo e implementar no back 
-    static async login(credential, password){
-        let result;
-        fetch(this.USERS+`/${credential}`, {
+
+    //login deve retornar o id de referência para o usuário
+    static login(credential, password){
+        return fetch(this.USERS+`/${credential}`, {
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
@@ -34,20 +43,19 @@ export class Mediator{
             })
         }).then(response => {
             if (response.status === 404){
-                result = this.USER_NOT_FOUND;
+                return this.NOT_FOUND;
             }else if(response.status === 401){
-                result = this.PASSWORD_INCORRECT;
+                return this.PASSWORD_INCORRECT;
             }else if(response.status === 200){
-                result = response.json();
-                this.sessionToken = result['sessionToken'];
+                this.user_id = response.json()['user_id'];
+                return this.LOGGED_IN;
             }
         });
-        return result;
     }
-    
-    static async register(credential, password){
-        let result;
-        fetch(this.USERS+`/${credential}`, {
+
+    // Vamos pegar o id do novo objeto user que tiver sido criado e guardar pra saber quem tá loggado
+    static register(credential, password){
+        return fetch(this.USERS+`/${credential}`, {
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
@@ -55,71 +63,151 @@ export class Mediator{
             })
         }).then(response => {
             if (response.status === 409){
-                result = this.ALREADY_EXISTS;
+                return this.ALREADY_EXISTS;
             }else if(response.status === 201){
-                result = response.json();
+                this.user_id = response.json()['id'];
+                return this.LOGGED_IN;
             }
         });
-        return result;
     }
-    
-    static async add_item(item){
-        let result;
-        fetch(this.USERS+`/${this.sessionToken}`, {
+
+    // Nesse caso o user_id vai ser o id do restaurante e recebemos um json do item criado
+    static add_item(item){
+        return fetch(this.RESTAURANT_ITEMS+`/${this.user_id}`, {
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify(item)
         }).then(response => {
-            if(response.status === 404){
-                result = this.INVALID_SESSION;
+            if(response.status === 401){
+                return this.INVALID_SESSION;
             }else if (response.status === 409){
-                result = this.ALREADY_EXISTS;
+                return this.ALREADY_EXISTS;
             }else if(response.status === 201){
-                result = response.json();
+                return response.json();
             }
         });
-        return result;
     }
-    
-    static async remove_item(item_id){
-        let result;
-        fetch(this.USERS+`/${this.sessionToken}/${item_id}`,
+
+    // Mesma coisa aqui o user_id vai ser o do restaurante que está loggado 
+    static remove_item(item_id){
+        return fetch(this.USERS+`/${this.user_id}/${item_id}`,
         {method:'DELETE'}).then(response => {
             if(response.status === 401){
-                result = this.INVALID_SESSION;
+                return this.INVALID_SESSION;
             }else if (response.status === 404){
-                result = this.ALREADY_EXISTS;
+                return this.ALREADY_EXISTS;
             }else if(response.status === 201){
-                result = this.DELETED_SUCCESSFULLY;
+                return this.DELETED_SUCCESSFULLY;
             }
         });
-        return result;
     }
-    
-    static async get_items(restaurant_id){
-        let result;
-        fetch(this.USERS+`/${this.sessionToken}/${restaurant_id}`,
+
+    // Retorna um JSON com todos os items do restaurante
+    static get_items(restaurant_id){
+        return fetch(this.RESTAURANT_ITEMS+`/${restaurant_id}`,
         {method:'GET'}).then(response => {
             if(response.status === 404){
-                result = this.SESSION_EXPIRED;
+                return this.NOT_FOUND;
             }else if (response.status === 409){
-                result = this.USER_ALREADY_EXISTS;
+                return this.ALREADY_EXISTS;
             }else if(response.status === 201){
-                result = response.json();
+                return response.json();
             }
         });
-        return result;
     }
     
-    static async edit_items(){}
+    // User_id de novo é o id do restaurante loggado para verificar a autorização
+    static edit_items(item_id, item){
+        return fetch(this.USERS+`/${this.user_id}/${item_id}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(item)
+        }).then(response => {
+            if(response.status === 401){
+                return this.INVALID_SESSION;
+            }else if(response.status === 404){
+                return this.NOT_FOUND;
+            }else if (response.status === 409){
+                return this.ALREADY_EXISTS;
+            }else if(response.status === 201){
+                return response.json();
+            }
+        });
+    }
     
-    static async tracking(){}
+    // Adiciona um novo pedido para um item de um restaurante em nome do usuário
+    static add_order(restaurant_id, item_id){
+        return fetch(this.ORDERS+`/${restaurant_id}/${item_id}`, {
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                "user_id":this.user_id 
+            })
+        }).then(response => {
+            if(response.status === 401){
+                return this.INVALID_SESSION;
+            }else if (response.status === 409){
+                return this.ALREADY_EXISTS;
+            }else if(response.status === 201){
+                return response.json();
+            }
+        });
+    }
     
-    static async add_order(){}
+    // Verifica o estado atual do pedido
+    static track_order(order_id){
+        return fetch(this.ORDERS+`/${order_id}`,{
+            method:'GET',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                "user_id":this.user_id 
+            })
+        }).then(response => {
+            if(response.status === 401){
+                return this.INVALID_SESSION;
+            }else if(response.status === 404){
+                return this.NOT_FOUND;
+            }else if(response.status === 201){
+                return response.json()["state"];
+            }
+        });
+    }
     
-    static async prepare_order(){}
+    // Se for o restaurante responsável atualiza o estado do pedido para "em preparo"
+    static prepare_order(order_id){
+        return fetch(this.ORDERS+`/${order_id}/prepare`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                "user_id":this.user_id 
+            })
+        }).then(response => {
+            if(response.status === 401){
+                return this.INVALID_SESSION;
+            }else if(response.status === 404){
+                return this.NOT_FOUND;
+            }else if(response.status === 201){
+                return this.UPDATED;
+            }
+        });
+    }
     
-    static async ship_order(){}
-    
-    static async sleep_order(){}
+    // Se for o restaurante responsável atualiza o estado do pedido para "à caminho"
+    static ship_order(order_id){
+        return fetch(this.ORDERS+`/${order_id}/ship`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                "user_id":this.user_id 
+            })
+        }).then(response => {
+            if(response.status === 401){
+                return this.INVALID_SESSION;
+            }else if(response.status === 404){
+                return this.NOT_FOUND;
+            }else if(response.status === 201){
+                return this.UPDATED;
+            }
+        });
+    }
 }
