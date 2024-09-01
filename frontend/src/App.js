@@ -18,13 +18,7 @@ function App() {
     const [states, setStatus] = useState({ home: 'offline', pedidos: 'offline' });
     //const location = useLocation()
     //TO DO: trocar esse json pra estados separados, tlvz até abandonar tudo e fazer um reducer direito
-    Mediator.ping(Mediator.USERS).then(result=>{
-      if(result === Mediator.SERVER_ERROR){
-        console.error("algo de errado no servidor");
-      }else if(result === Mediator.ONLINE){
-        setStatus({home:'online', pedidos: 'offline'})
-      }
-    });
+    
   return (
     <div>
       <Provider store={store}>
@@ -33,7 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<CreateCliente />} />
             <Route path="/home" element={states.home === 'online' ? <Home /> : <div>Home is offline</div>} />
-            <Route path="/pedidos" element={states.pedidos === 'online' ? <Pedidos /> : <div>Pedidos is {states.pedidos}</div>} />
+            <Route path="/pedidos" element={<Pedidos />} />
             <Route path="/profile" element={<PerfilCliente />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/restaurante" element={<PageRestauranteEscolhido />} />
