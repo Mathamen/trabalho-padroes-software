@@ -1,18 +1,23 @@
 from pydantic import BaseModel
+from typing import List
 
 # As schemas servem como instanciação das tuplas do banco de dados
 # na forma de objetos para manipulação e edição,
 # mantendo ainda a possibilidade de serem convertidas para uma query sql ou uma resposta json  
-class ItemBase(BaseModel):
-    name: str
-    description: str
+class OrderBase(BaseModel):
+    state: str
+    listitems: List[int]
+    cnpj_restaurant: str
+    cpf_client: str
+    finalizado: bool = False
+    pagamento: bool = False
 
 #instancia um dummy item para receber os dados de criação
-class ItemCreate(ItemBase):
+class OrderCreate(OrderBase):
     pass
 
 #item efetivo e auto indexado por int em ordem crescente
-class Item(ItemBase):
+class Order(OrderBase):
     id: int
 
     class Config:

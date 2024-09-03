@@ -37,26 +37,26 @@ def get_db():
 def ping_response():
     return JSONResponse(content={},status_code=200)
 
-@app.put("/items/", response_model=schemas.Item)
-def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    return crud.create_item(db=db, item=item)
+@app.post("/orders/", response_model=schemas.Order)
+def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    return crud.create_order(db=db, order=order)
 
-@app.get("/items/{item_id}", response_model=schemas.Item)
-def read_item(item_id: int, db: Session = Depends(get_db)):
-    db_item = crud.get_item(db, item_id=item_id)
-    if db_item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return db_item
+@app.get("/orders/{order_id}", response_model=schemas.Order)
+def read_order(order_id: int, db: Session = Depends(get_db)):
+    db_order = crud.get_order(db, order_id=order_id)
+    if db_order is None:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return db_order
 
-@app.post("/items/{item_id}", response_model=schemas.Item)
-def update_item(item_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    db_item = crud.update_item(db, item_id=item_id, item=item)
-    if db_item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return db_item
+@app.put("/orders/{order_id}", response_model=schemas.Order)
+def update_order(order_id: int, order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    db_order = crud.update_order(db, order_id=order_id, order=order)
+    if db_order is None:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return db_order
 
-@app.delete("/items/{item_id}", response_model=schemas.Item)
-def delete_item(item_id: int, db: Session = Depends(get_db)):
-    if crud.delete_item(db, item_id=item_id):
-        return JSONResponse(content= {"message":f"item {item_id}: deleted successfully"})
-    raise HTTPException(status_code=404, detail="Item not found")
+@app.delete("/orders/{order_id}", response_model=schemas.Order)
+def delete_order(order_id: int, db: Session = Depends(get_db)):
+    if crud.delete_order(db, order_id=order_id):
+        return JSONResponse(content= {"message":f"order {order_id}: deleted successfully"})
+    raise HTTPException(status_code=404, detail="Order not found")
