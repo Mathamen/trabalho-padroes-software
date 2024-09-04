@@ -52,3 +52,8 @@ class Restaurant(RestaurantBase):
 
     class Config:
         orm_mode = True
+
+class Authorization(BaseModel):
+    #user_id: str
+    email: str
+    password: str

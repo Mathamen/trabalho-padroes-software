@@ -12,11 +12,11 @@ class Client(Base):
     __tablename__ = "clients"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    cpf = Column(String, unique=True, index=True)
-    phone_number = Column(String, index=True)
-    address = Column(String, index=True)
+    name = Column(String)
+    email = Column(String, unique=True)
+    cpf = Column(String, unique=True)
+    phone_number = Column(String)
+    address = Column(String)
     password = Column(String) #Armazena hash da senha    
     # description = Column(String, index=True)
 
@@ -24,10 +24,10 @@ class Restaurant(Base):
     __tablename__ = "restaurants"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    cnpj = Column(String, unique=True, index=True)
-    phone_number = Column(String, index=True)
-    address = Column(String, index=True)
+    name = Column(String)
+    email = Column(String, unique=True)
+    cnpj = Column(String, unique=True)
+    phone_number = Column(String)
+    address = Column(String)
     password = Column(String) #Armazena hash da senha    
     # description = Column(String, index=True)

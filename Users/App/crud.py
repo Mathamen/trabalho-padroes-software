@@ -5,14 +5,14 @@ from . import models, schemas
 def get_client(db: Session, client_id: int):
     return db.query(models.Client).filter(models.Client.id == client_id).first()
 
-def create_client(db: Session, client: schemas.ClientCreate):
+def create_client(db: Session, client: schemas.ClientCreate, credencial: str, password: str):
     db_client = models.Client(
         name=client.name, 
         email=client.email,
         cpf=client.cpf,
         phone_number=client.phone_number,
         address=client.address,
-        password=client.password
+        password=password
     )
     db.add(db_client)
     db.commit()

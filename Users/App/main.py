@@ -37,8 +37,8 @@ def get_db():
 def ping_response():
     return JSONResponse(content={},status_code=200)
 
-@app.post("/clients/", response_model=schemas.Client)
-def create_client(client: schemas.ClientCreate, db: Session = Depends(get_db)):
+@app.post("/{credencial}/", response_model=schemas.Client)
+def create_client(credencial: str, password: str, client: schemas.ClientCreate, db: Session = Depends(get_db)):
     return crud.create_client(db=db, client=client)
 
 @app.get("/clients/{client_id}", response_model=schemas.Client)
