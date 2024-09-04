@@ -6,12 +6,12 @@ export default function CardProduto(props)
         <div className="card mb-3 col-md-6">
             <div className="row">             
                 <div className="col-md-8">{/*O restante para as demais informacoes*/}
-                    <h4 className="card-title">{props.nomeProduto}</h4>
-                    <p className="card-text">{props.descricao}</p>
-                    <h5 className="card-title">R${props.preco}</h5>
+                    <h4 className="card-title">{props.name}</h4>
+                    <p className="card-text">{props.description}</p>
+                    <h5 className="card-title">R${props.price}</h5>
                 </div>
                 <div className="col-md-4">{/*Um terço do card pra imagem*/}
-                    <img src={props.imagem} className="img-thumbnail"></img>
+                    <img src={props.photo} className="img-thumbnail"></img>
                 </div>
             </div>
             

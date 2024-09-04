@@ -8,22 +8,22 @@ import { Mediator } from '../../../Mediator.js';
 
 const produtos = [
     {
-        nomeProduto : "Pizza de calabresa família",
-        descricao : "Uma pizza com 35 cm de diâmetro coberta de calabresas e cebolas deliciosas!",
-        preco : 35,
-        imagem : LogoTeste
+        name : "Pizza de calabresa família",
+        description : "Uma pizza com 35 cm de diâmetro coberta de calabresas e cebolas deliciosas!",
+        price : 35,
+        photo : LogoTeste
     },
     {
-        nomeProduto : "Mineirinho 2L",
-        descricao : "O refrigerante de 2L mais vendido do Rio",
-        preco : 12,
-        imagem : LogoTeste
+        name : "Mineirinho 2L",
+        description : "O refrigerante de 2L mais vendido do Rio",
+        price : 12,
+        photo : LogoTeste
     },
     {
-        nomeProduto : "Pizza de 4 queijos brotinho",
-        descricao : "Uma pizza com 9 cm de diâmetro com quatro queijos de verdade!",
-        preco : 17,
-        imagem : LogoTeste
+        name : "Pizza de 4 queijos brotinho",
+        description : "Uma pizza com 9 cm de diâmetro com quatro queijos de verdade!",
+        price : 17,
+        photo : LogoTeste
     }
 ]
 
@@ -38,7 +38,7 @@ export default function PageRestauranteEscolhido(){
     const [buscaNome, setBuscaNome] = useState('');
 
     const produtosFiltrados = produtos.filter((prod) =>
-        prod.nomeProduto.toLowerCase().includes(buscaNome.toLowerCase())
+        prod.name.toLowerCase().includes(buscaNome.toLowerCase())
     );
     console.log(restauranteState);
 

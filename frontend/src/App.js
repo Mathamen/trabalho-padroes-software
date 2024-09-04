@@ -10,6 +10,7 @@ import PerfilCliente from './pages/clienteview/perfilcliente/PerfilCliente.jsx';
 import Delivery from './pages/pedidos/FazerPedido/Delivery.jsx';
 import PageRestauranteEscolhido from './pages/pedidos/FazerPedido/PageRestauranteEscolhido.jsx';
 import Carrinho from './pages/Carrinho/Carrinho.jsx';
+import CreateItemPage from './pages/Items/CreateItemPage.jsx';
 import {store} from './app/store';
 import { Provider } from 'react-redux';
 import { Mediator } from './Mediator.js';
@@ -28,6 +29,7 @@ function App() {
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/restaurante" element={<PageRestauranteEscolhido />} />
             <Route path="/carrinho" element={<Carrinho />} />
+            <Route path="/createItem" element={<CreateItemPage />} />
           </Routes>
         </Router>
       </Provider>
