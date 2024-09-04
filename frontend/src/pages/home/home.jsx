@@ -16,7 +16,7 @@ const Home = () => {
         <td>
           <button className='btn btn-light' id="fazerPedidoBtn"><Link to="/delivery">
             <img src={pedir}></img>
-            <h4>Realizar Pedido</h4>
+            <h4>Fazer Pedido</h4>
             </Link></button>
         </td>
         <td>
@@ -28,10 +28,10 @@ const Home = () => {
       </tr> 
       <tr>
         <td>
-          <button className='btn btn-light' id="RastrearBtn">
+          <button className='btn btn-light' id="RastrearBtn"> <Link to="/profile">
             <img src={radar}></img>
-            <h4>Rastreamento</h4>
-          </button>
+            <h4>Seu cadastro</h4>
+            </Link></button>
         </td>
         <td>
           <button className='btn btn-light' id="listaPedidosBtn"> <Link to="/pedidos">
