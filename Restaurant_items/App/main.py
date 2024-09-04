@@ -56,7 +56,7 @@ def read_items(restaurant_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code = 404, datail="Restaurant items not found")
     return db_items
 
-@app.put("/{item_id}", response_model=schemas.Item)
+@app.put("/{user_id}/{item_id}", response_model=schemas.Item)
 def update_item(item_id: int, item: schemas.ItemUpdate, db: Session = Depends(get_db)):
     db_item = crud.update_item(db, item_id=item_id, item=item)
     if db_item is None:
