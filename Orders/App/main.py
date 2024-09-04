@@ -1,9 +1,10 @@
 # A main é onde as requisições http são tratadas
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from . import models, schemas, crud, database
+import asyncio
 
 
 #instanciação de tabelas baseadas nos modelos declarados
@@ -37,7 +38,7 @@ def get_db():
 def ping_response():
     return JSONResponse(content={},status_code=200)
 
-@app.get("/orders/{order_id}", response_model=schemas.Order)
+@app.get("/{order_id}", response_model=schemas.Order)
 def read_order(order_id: int, db: Session = Depends(get_db)):
     db_order = crud.get_order(db, order_id=order_id)
     if db_order is None:
@@ -59,4 +60,32 @@ def delete_order(order_id: int, db: Session = Depends(get_db)):
 
 @app.post("/{restaurant_id}/{user_id}", response_model=schemas.Order)
 def make_order(restaurant_id:str, user_id:str, order: schemas.OrderCreate, db: Session = Depends(get_db)):
-    return crud.create_order(order, db, restaurant_id, user_id)
+    return crud.create_order(db, order, restaurant_id, user_id)
+
+@app.put("/{order_id}/prepare")
+def prepare_order(order_id, auth:schemas.Authorization, db: Session = Depends(get_db)):
+    db_order = crud.get_order(db=db, order_id=order_id)
+    if db_order.cnpj_restaurant == auth.user_id:
+        db_order.state = "em preparo"
+        db.commit()
+        db.refresh(db_order)
+        return db_order
+    
+
+@app.put("/{order_id}/ship")
+def prepare_order(order_id, auth:schemas.Authorization, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    db_order = crud.get_order(db=db, order_id=order_id)
+    if db_order.cnpj_restaurant == auth.user_id:
+        db_order.state = "enviado"
+        db.commit()
+        db.refresh(db_order)
+        background_tasks.add_task(deliver, order_id=order_id, db=db)
+        return db_order
+    
+async def deliver(order_id:int, db: Session = Depends(get_db)):
+    await asyncio.sleep(15)
+    db_order = crud.get_order(db=db, order_id=order_id)
+    db_order.state = "entregue"
+    db_order.finalizado = True
+    db.commit()
+    db.refresh(db_order)
