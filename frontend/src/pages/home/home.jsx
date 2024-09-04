@@ -34,10 +34,10 @@ const Home = () => {
           </button>
         </td>
         <td>
-          <button className='btn btn-light' id="listaPedidosBtn">
+          <button className='btn btn-light' id="listaPedidosBtn"> <Link to="/pedidos">
             <img src={listaPedidos}></img>
             <h4>Seus pedidos</h4>
-          </button>
+            </Link></button>
         </td>
       </tr> 
       </tbody>
