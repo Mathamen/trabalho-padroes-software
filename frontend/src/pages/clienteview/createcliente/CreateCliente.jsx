@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setClient } from '../../../features/actions/ClienteActions.js';
 
+import { Mediator } from '../../../Mediator.js';
+
 const CreateCliente = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [endereco, setEndereco] = useState('');
+  const [phone_number, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [emailLog, setEmailLog] = useState('');
   const [restaurante, setRestaurante] = useState(false);
-
+  const [password, setPassword] = useState("");
   const [cnpj, setCnpj] = useState('');
   const [cpf, setCpf] = useState('');
   const [cartao, setCartao] = useState('');
@@ -19,16 +21,39 @@ const CreateCliente = () => {
   const handleSignInSubmit = (e) => {
     e.preventDefault();
 
-    // Simular uma chamada de API
-    const newClient = { name, email, phone };
+    if(restaurante)//Criacao de um objeto restaurante
+    {
+      const newEntry = {
+        name, address, phone_number,cnpj,email
+      };
 
-    dispatch(setClient(newClient));
-
+      const response = Mediator.registerRestaurant(newEntry, password);
+      if(response === Mediator.ALREADY_EXISTS)
+      {
+        alert("Esse restaurante já foi registrado!");
+        return
+      }
+  
+      //Depois fechar Create de Restaurante
+    }
+    else{
+      const newEntry = {
+        name, address, phone_number,cpf,email
+      };
+      const response = Mediator.registerClient(newEntry, password);
+      if(response === Mediator.ALREADY_EXISTS)
+      {
+        alert("Esse usuário já foi registrado!");
+        return
+      }
+    }
+    alert("Usuário cadastrado com sucesso! Seja bem vindo ao VocêComida!");
+    alert(Mediator.user_id);
     // Limpar os campos
     setName('');
     setEmail('');
     setPhone('');
-    setEndereco('');
+    setAddress('');
     setCartao('');
     setCnpj('');
     setCpf('');
@@ -71,8 +96,8 @@ const CreateCliente = () => {
               <input
                 className='form-control'
                 type="text"
-                value={endereco}
-                onChange={(e) => setEndereco(e.target.value)}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </label>
           </div> 
@@ -82,7 +107,7 @@ const CreateCliente = () => {
               <input
                 className='form-control'
                 type="text"
-                value={phone}
+                value={phone_number}
                 onChange={(e) => setPhone(e.target.value)}
               />
             </label>
@@ -93,7 +118,8 @@ const CreateCliente = () => {
               <input
                 className='form-control'
                 type="password"
-                
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </label>
           </div>

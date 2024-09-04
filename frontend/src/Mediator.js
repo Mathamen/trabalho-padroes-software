@@ -54,6 +54,39 @@ export class Mediator{
     }
 
     // Vamos pegar o id do novo objeto user que tiver sido criado e guardar pra saber quem tá loggado
+    static registerClient(credential, password){
+        return fetch(this.USERS+"/clients"+`/${credential}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                'password':password
+            })
+        }).then(response => {
+            if (response.status === 409){
+                return this.ALREADY_EXISTS;
+            }else if(response.status === 201){
+                this.user_id = response.json()['id'];
+                return this.LOGGED_IN;
+            }
+        });
+    }
+    static registerRestaurant(credential, password){
+        return fetch(this.USERS+"/restaurants"+`/${credential}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                'password':password
+            })
+        }).then(response => {
+            if (response.status === 409){
+                return this.ALREADY_EXISTS;
+            }else if(response.status === 201){
+                this.user_id = response.json()['id'];
+                return this.LOGGED_IN;
+            }
+        });
+    }
+
     static register(credential, password){
         return fetch(this.USERS+`/${credential}`, {
             method:'POST',
@@ -71,6 +104,7 @@ export class Mediator{
         });
     }
 
+    
     // Nesse caso o user_id vai ser o id do restaurante e recebemos um json do item criado
     static add_item(item){
         return fetch(this.RESTAURANT_ITEMS+`/${this.user_id}`, {
@@ -101,7 +135,22 @@ export class Mediator{
             }
         });
     }
-
+/*
+//Nao tava conseguindo fazer funcionar, mas se acharem que estava perto, o esqueleto era esse
+    // Retorna um JSON com todos os restaurantes
+    static get_restaurants(){
+        return fetch(this.RESTAURANT_ITEMS+"/restaurants",
+        {method:'GET'}).then(response => {
+            if(response.status === 404){
+                return this.NOT_FOUND;
+            }else if (response.status === 409){
+                return this.ALREADY_EXISTS;
+            }else if(response.status === 201){
+                return response.json();
+            }
+        });
+    }
+*/
     // Retorna um JSON com todos os items do restaurante
     static get_items(restaurant_id){
         return fetch(this.RESTAURANT_ITEMS+`/${restaurant_id}`,

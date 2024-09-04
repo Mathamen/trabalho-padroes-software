@@ -6,27 +6,6 @@ import {useLocation} from 'react-router-dom';
 import { Mediator } from '../../../Mediator.js';
 
 
-const produtos = [
-    {
-        name : "Pizza de calabresa família",
-        description : "Uma pizza com 35 cm de diâmetro coberta de calabresas e cebolas deliciosas!",
-        price : 35,
-        photo : LogoTeste
-    },
-    {
-        name : "Mineirinho 2L",
-        description : "O refrigerante de 2L mais vendido do Rio",
-        price : 12,
-        photo : LogoTeste
-    },
-    {
-        name : "Pizza de 4 queijos brotinho",
-        description : "Uma pizza com 9 cm de diâmetro com quatro queijos de verdade!",
-        price : 17,
-        photo : LogoTeste
-    }
-]
-
 export default function PageRestauranteEscolhido(){
     const hist = useLocation();
     const restauranteState = hist.state || {logo: LogoTeste, nome: "Nome teste"}; //Esse ou é só pra garantir
@@ -35,15 +14,34 @@ export default function PageRestauranteEscolhido(){
     const [online, setOnline] = useState(null);
     Mediator.ping(Mediator.RESTAURANT_ITEMS).then(result=>setOnline(result));
 
-    const [buscaNome, setBuscaNome] = useState('');
+    const [produtos, setProduto] = useState([]) ;
 
+    const fetchItems = async () => {
+        try {
+          const restaurantId = Mediator.user_id; // ou um id fixo se já conhecido
+          const response = await Mediator.get_items("11-111-11/0001-1");
+    
+          if (response === Mediator.NOT_FOUND) {
+            console.log("Restaurante não encontrado.");
+          } else if (response === Mediator.ALREADY_EXISTS) {
+            console.log("Itens já existem.");
+          } else {
+            setProduto(response); // Supondo que a resposta seja um array de itens
+          }
+        } catch (err) {
+          console.log("Erro ao buscar itens.");
+        }
+      };
+
+    const [buscaNome, setBuscaNome] = useState('');
     const produtosFiltrados = produtos.filter((prod) =>
         prod.name.toLowerCase().includes(buscaNome.toLowerCase())
     );
-    console.log(restauranteState);
+
+    console.log(produtos);
 
     const page = (
-        <main className='container'>
+        <main className='container' onLoad={() => fetchItems}>
             <div className="row">
                 <div className="col-md-1">
                     <img src={restauranteState.logo} className="img-thumbnail"/>
