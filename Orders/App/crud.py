@@ -5,14 +5,11 @@ from . import models, schemas
 def get_order(db: Session, order_id: int):
     return db.query(models.Order).filter(models.Order.id == order_id).first()
 
-def create_order(db: Session, order: schemas.OrderCreate):
+def create_order(db: Session, order: schemas.OrderCreate, restaurant_id:str, user_id:str):
     db_order = models.Order(
-        state = order.state,
-        listitems = ",".join(map(int, order.listitems)),
-        cnpj_restaurant = order.cnpj_restaurant,
-        cpf_client = order.cpf_client,
-        finalizado = order.finalizado,
-        pagamento = order.pagamento
+        listitems = ",".join(map(str, order.listitems)),
+        cnpj_restaurant = restaurant_id,
+        cpf_client = user_id
     )
     db.add(db_order)
     db.commit()

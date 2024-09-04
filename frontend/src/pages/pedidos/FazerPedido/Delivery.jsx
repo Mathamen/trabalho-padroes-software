@@ -56,6 +56,6 @@ export default function Delivery()
         </main>
     );
   }else{
-      return <div>Carregando cardápio</div>;
+      return <div>Carregando cardápio...</div>;
   }
 };

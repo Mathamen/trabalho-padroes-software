@@ -56,7 +56,7 @@ export class Mediator{
     // Vamos pegar o id do novo objeto user que tiver sido criado e guardar pra saber quem tá loggado
     static register(credential, password){
         return fetch(this.USERS+`/${credential}`, {
-            method:'PUT',
+            method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
                 'password':password
@@ -74,7 +74,7 @@ export class Mediator{
     // Nesse caso o user_id vai ser o id do restaurante e recebemos um json do item criado
     static add_item(item){
         return fetch(this.RESTAURANT_ITEMS+`/${this.user_id}`, {
-            method:'PUT',
+            method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify(item)
         }).then(response => {
@@ -119,7 +119,7 @@ export class Mediator{
     // User_id de novo é o id do restaurante loggado para verificar a autorização
     static edit_items(item_id, item){
         return fetch(this.USERS+`/${this.user_id}/${item_id}`, {
-            method:'POST',
+            method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify(item)
         }).then(response => {
@@ -136,12 +136,12 @@ export class Mediator{
     }
     
     // Adiciona um novo pedido para um item de um restaurante em nome do usuário
-    static add_order(restaurant_id, item_id){
-        return fetch(this.ORDERS+`/${restaurant_id}/${item_id}`, {
-            method:'PUT',
+    static add_order(restaurant_id, list_item_ids){
+        return fetch(this.ORDERS+`/${restaurant_id}/${this.user_id}`, {
+            method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
-                "user_id":this.user_id 
+                "list_item_id":list_item_ids,
             })
         }).then(response => {
             if(response.status === 401){
@@ -176,7 +176,7 @@ export class Mediator{
     // Se for o restaurante responsável atualiza o estado do pedido para "em preparo"
     static prepare_order(order_id){
         return fetch(this.ORDERS+`/${order_id}/prepare`,{
-            method:'POST',
+            method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
                 "user_id":this.user_id 
@@ -195,7 +195,7 @@ export class Mediator{
     // Se for o restaurante responsável atualiza o estado do pedido para "à caminho"
     static ship_order(order_id){
         return fetch(this.ORDERS+`/${order_id}/ship`,{
-            method:'POST',
+            method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
                 "user_id":this.user_id 
