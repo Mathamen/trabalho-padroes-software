@@ -15,7 +15,7 @@ import { Provider } from 'react-redux';
 import { Mediator } from './Mediator.js';
 
 function App() {
-    const [states, setStatus] = useState({ home: 'offline', pedidos: 'offline' });
+    const [states, setStatus] = useState({ home: 'online', pedidos: 'offline' });
     //const location = useLocation()
     //TO DO: trocar esse json pra estados separados, tlvz até abandonar tudo e fazer um reducer direito
     
