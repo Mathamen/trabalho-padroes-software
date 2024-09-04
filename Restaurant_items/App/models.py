@@ -7,7 +7,7 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     photo = Column(String, nullable=False)
-    name = Column(String, index=True)
-    description = Column(String, index=True)
+    name = Column(String)
+    description = Column(String)
     price = Column(Float, nullable=False)
-    cnpj_restaurant = Column(String, index=True)
+    cnpj_restaurant = Column(String)

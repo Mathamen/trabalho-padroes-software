@@ -5,17 +5,17 @@ from . import models, schemas
 def get_item(db: Session, item_id: int):
     return db.query(models.Item).filter(models.Item.id == item_id).first()
 
-#Recupera uma lista de registros do banco de dados, aqui ele retorna até 10 registros 
-def get_items(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+#Retorna todos os itens do restaurante_id
+def get_items(db: Session, restaurant_id=str):
+    return db.query(models.Item).filter(models.Item.cnpj_restaurant == restaurant_id).all()
 
-def create_item(db: Session, item: schemas.ItemCreate):
+def create_item(db: Session, item: schemas.ItemCreate, user_id: str):
     db_item = models.Item(
         name=item.name, 
         description=item.description,
         price=item.price,
         photo=item.photo,
-        cnpj_restaurant=item.cnpj_restaurant
+        cnpj_restaurant=user_id
         )
     db.add(db_item)
     db.commit()
