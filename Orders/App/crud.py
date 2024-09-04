@@ -8,7 +8,7 @@ def get_order(db: Session, order_id: int):
 def create_order(db: Session, order: schemas.OrderCreate):
     db_order = models.Order(
         state = order.state,
-        listitems = ",".join(map(str, order.listitems)),
+        listitems = ",".join(map(int, order.listitems)),
         cnpj_restaurant = order.cnpj_restaurant,
         cpf_client = order.cpf_client,
         finalizado = order.finalizado,
