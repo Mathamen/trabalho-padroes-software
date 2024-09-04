@@ -15,6 +15,7 @@ const CreateCliente = () => {
   const [cnpj, setCnpj] = useState('');
   const [cpf, setCpf] = useState('');
   const [cartao, setCartao] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('');
 
   const dispatch = useDispatch();
 
@@ -57,11 +58,20 @@ const CreateCliente = () => {
     setCartao('');
     setCnpj('');
     setCpf('');
+    setPassword('');
   };
   const handleLogInSubmit = (e) => {
     e.preventDefault();
-    setEmail('');
+    
+    const response = Mediator.login(email, password);
+    if(response === Mediator.NOT_FOUND || response === Mediator.PASSWORD_INCORRECT)
+    {
+      alert("Usuário ou senha incorretos!");
+      return;
+    }
 
+    setEmail('');
+    setPasswordLogin('');
   }
   return (
     <div className='container-fluid row'>
