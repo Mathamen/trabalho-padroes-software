@@ -3,6 +3,7 @@ import LogoTeste from '../../../images/logo2.png';
 
 import CardProduto from "../../../Components/ItemCardapio/CardProduto.jsx";
 import {useLocation} from 'react-router-dom';
+import { Mediator } from '../../../Mediator.js';
 
 
 const produtos = [
@@ -26,11 +27,13 @@ const produtos = [
     }
 ]
 
-export default function PageRestauranteEscolhido()
-{
+export default function PageRestauranteEscolhido(){
     const hist = useLocation();
     const restauranteState = hist.state || {logo: LogoTeste, nome: "Nome teste"}; //Esse ou é só pra garantir
-//Que se alguem abrir essa page antes de delivery não caia em um erro de nullReference
+    //Que se alguem abrir essa page antes de delivery não caia em um erro de nullReference
+
+    const [online, setOnline] = useState(null);
+    Mediator.ping(Mediator.RESTAURANT_ITEMS).then(result=>setOnline(result));
 
     const [buscaNome, setBuscaNome] = useState('');
 
@@ -38,7 +41,8 @@ export default function PageRestauranteEscolhido()
         prod.nomeProduto.toLowerCase().includes(buscaNome.toLowerCase())
     );
     console.log(restauranteState);
-    return(
+
+    const page = (
         <main className='container'>
             <div className="row">
                 <div className="col-md-1">
@@ -71,4 +75,13 @@ export default function PageRestauranteEscolhido()
 
         </main>
     );
+
+    
+    if (online === Mediator.OFFLINE){
+        return <div>Pedidos offline</div>
+    }else if (online === Mediator.ONLINE){
+        return page;
+    }else{
+        return <div>Pedidos is now loading...</div>;
+    }
 }

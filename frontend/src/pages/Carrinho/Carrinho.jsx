@@ -2,9 +2,12 @@ import React, {useState} from "react";
 
 import LogoTeste from '../../images/logo2.png';
 import CardCarrinho from "../../Components/CardCarrinho/CardCarrinho";
+import { Mediator } from '../../Mediator.js';
 
 export default function Carrinho()
 {
+    const [online, setOnline] = useState(null);
+    Mediator.ping(Mediator.ORDERS).then(result=>setOnline(result));
     const restaurantesPedidos =[
         {
             cnpj : "00000", 
@@ -46,8 +49,7 @@ export default function Carrinho()
     produtosPedidos.forEach(element => {
         total += (element.preco);
     });
-    
-    return(
+    const page = (
         <div className="container">
             <h2>Seu Carrinho: </h2>
             {restaurantesPedidos.map((restaurante)=>
@@ -76,5 +78,12 @@ export default function Carrinho()
 
             <button className="btn btn-primary">Fechar pedido em: {total}</button>
         </div>
-    );
+    );  
+    if (online === Mediator.OFFLINE){
+        return <div>Carrinho offline</div>
+    }else if (online === Mediator.ONLINE){
+        return page;
+    }else{
+        return <div>Carregando carrinho...</div>;
+    }
 }

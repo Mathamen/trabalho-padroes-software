@@ -14,11 +14,7 @@ import {store} from './app/store';
 import { Provider } from 'react-redux';
 import { Mediator } from './Mediator.js';
 
-function App() {
-    const [states, setStatus] = useState({ home: 'offline', pedidos: 'offline' });
-    //const location = useLocation()
-    //TO DO: trocar esse json pra estados separados, tlvz até abandonar tudo e fazer um reducer direito
-    
+function App() {    
   return (
     <div>
       <Provider store={store}>
@@ -26,7 +22,7 @@ function App() {
         <Navbar />
           <Routes>
             <Route path="/" element={<CreateCliente />} />
-            <Route path="/home" element={states.home === 'online' ? <Home /> : <div>Home is offline</div>} />
+            <Route path="/home" element={<Home />} />
             <Route path="/pedidos" element={<Pedidos />} />
             <Route path="/profile" element={<PerfilCliente />} />
             <Route path="/delivery" element={<Delivery />} />

@@ -10,7 +10,7 @@ const Pedidos = () => {
   }else if (online === Mediator.ONLINE){
     return <h2>Pedidos Page</h2>;
   }else{
-    return <div>Pedidos is now loading...</div>;
+    return <div>Carregando pedidos...</div>;
   }
 };
 
