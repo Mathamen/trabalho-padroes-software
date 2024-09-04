@@ -6,8 +6,14 @@ const CreateCliente = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [endereco, setEndereco] = useState('');
   const [emailLog, setEmailLog] = useState('');
   const [restaurante, setRestaurante] = useState(false);
+
+  const [cnpj, setCnpj] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [cartao, setCartao] = useState('');
+
   const dispatch = useDispatch();
 
   const handleSignInSubmit = (e) => {
@@ -22,6 +28,10 @@ const CreateCliente = () => {
     setName('');
     setEmail('');
     setPhone('');
+    setEndereco('');
+    setCartao('');
+    setCnpj('');
+    setCpf('');
   };
   const handleLogInSubmit = (e) => {
     e.preventDefault();
@@ -54,7 +64,18 @@ const CreateCliente = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </label>
-          </div>   
+          </div>  
+          <div className='d-flex justify-content-center'>
+            <label>
+              Endereco:
+              <input
+                className='form-control'
+                type="text"
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+              />
+            </label>
+          </div> 
           <div className='d-flex justify-content-center'>
             <label>
               Telefone:
@@ -78,17 +99,38 @@ const CreateCliente = () => {
           </div>
           <div className='d-flex justify-content-center'>
             <div class="form-check">
-              <input className="form-check-input" type="checkbox" value={restaurante} onChange={(e) => setRestaurante(e.target.value)}/>
+              <input 
+              className="form-check-input" 
+              type="checkbox" 
+              value={restaurante} 
+              onChange={(e) => setRestaurante(e.target.checked)}/>
+              
               <label class="form-check-label" for="flexCheckDefault">
                 Gostaria de uma conta de restaurante?
               </label>
             </div>
+          </div>
+
+          {cpfOuCnpj()}
+
+          <div className='d-flex justify-content-center'>
+            <label>
+              Número do cartão:
+              <input
+                className='form-control'
+                type="text"
+                value={cartao}
+                onChange={(e) => setCartao(e.target.value)}
+              />
+            </label>
           </div>
           <br/><div className='d-flex justify-content-center'>
             <button className='btn btn-primary' type="submit">Cadastrar</button>
           </div>
         </form>
       </div>
+
+
       <div className='col-md-6'>
         <h3>Já possui conta? Entre aqui:</h3>
         <form onSubmit={handleLogInSubmit}>
@@ -120,6 +162,41 @@ const CreateCliente = () => {
       </div>
     </div>
   );
+
+  function cpfOuCnpj()
+  {
+    if(restaurante)
+    {
+      return(
+        <div className='d-flex justify-content-center'>
+            <label>
+              CNPJ:
+              <input
+                className='form-control'
+                type="text"
+                value={cnpj}
+                onChange={(e) => setCnpj(e.target.value)}
+              />
+            </label>
+          </div>
+      );
+    }
+    else if(!restaurante){
+      return(
+        <div className='d-flex justify-content-center'>
+            <label>
+              CPF:
+              <input
+                className='form-control'
+                type="text"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
+            </label>
+          </div>
+      );
+    }
+  }
 };
 
 export default CreateCliente;
