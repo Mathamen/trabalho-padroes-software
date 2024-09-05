@@ -89,7 +89,7 @@ export class Mediator{
     // }
 
     static register(user){
-        return fetch(this.USERS+`/${credential}`, {
+        return fetch(this.USERS, {
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify(user)
