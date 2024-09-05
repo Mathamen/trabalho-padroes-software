@@ -113,7 +113,7 @@ const CreateCliente = () => {
           </div>  
           <div className='d-flex justify-content-center'>
             <label>
-              Endereco:
+              Endereço:
               <input
                 className='form-control'
                 type="text"
