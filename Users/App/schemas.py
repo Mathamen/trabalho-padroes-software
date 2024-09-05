@@ -57,3 +57,19 @@ class Authorization(BaseModel):
     #user_id: str
     email: str
     password: str
+
+class User(BaseModel):
+    name: str
+    email: str
+    cpf: str
+    phone_number: str
+    address: str
+    password: str
+
+    
+    
+    
+    
+    
+    
+    

@@ -34,11 +34,12 @@ export class Mediator{
     }
 
     //login deve retornar o id de referência para o usuário
-    static login(credential, password){
-        return fetch(this.USERS+`/${credential}`, {
+    static login(email, password){
+        return fetch(this.USERS+`/login`, {
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
+                'email': email,
                 'password': password
             })
         }).then(response => {
@@ -87,13 +88,11 @@ export class Mediator{
         });
     }
 
-    static register(credential, password){
+    static register(user){
         return fetch(this.USERS+`/${credential}`, {
             method:'POST',
             headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({
-                'password':password
-            })
+            body: JSON.stringify(user)
         }).then(response => {
             if (response.status === 409){
                 return this.ALREADY_EXISTS;
