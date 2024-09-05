@@ -39,13 +39,22 @@ def ping_response():
 
 @app.post("/", response_model=schemas.Client)
 def create_client(client: schemas.User, db: Session = Depends(get_db)):
-    return crud.create_client(db=db, client=client)
+    try:
+        return crud.create_client(db=db, client=client)
+    except:
+        raise HTTPException(status_code=409, detail="User already exists")
+
+
 
 @app.post("/login")
 def login(auth:schemas.Authorization, db: Session = Depends(get_db)):
     db_client = db.query(models.Client).filter(models.Client.email == auth.email).first()
-    if db_client.password == auth.password:
+    if db_client == None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    elif db_client.password == auth.password:
         return JSONResponse(content={"user_id":db_client.email},status_code=200)
+    else:
+        raise HTTPException(status_code=401, detail="Password incorrect")
 
 @app.get("/clients/{client_id}", response_model=schemas.Client)
 def read_client(client_id: int, db: Session = Depends(get_db)):

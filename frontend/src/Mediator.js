@@ -55,38 +55,38 @@ export class Mediator{
     }
 
     // Vamos pegar o id do novo objeto user que tiver sido criado e guardar pra saber quem tá loggado
-    static registerClient(credential, password){
-        return fetch(this.USERS+"/clients"+`/${credential}`, {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({
-                'password':password
-            })
-        }).then(response => {
-            if (response.status === 409){
-                return this.ALREADY_EXISTS;
-            }else if(response.status === 201){
-                this.user_id = response.json()['id'];
-                return this.LOGGED_IN;
-            }
-        });
-    }
-    static registerRestaurant(credential, password){
-        return fetch(this.USERS+"/restaurants"+`/${credential}`, {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({
-                'password':password
-            })
-        }).then(response => {
-            if (response.status === 409){
-                return this.ALREADY_EXISTS;
-            }else if(response.status === 201){
-                this.user_id = response.json()['id'];
-                return this.LOGGED_IN;
-            }
-        });
-    }
+    // static registerClient(credential, password){
+    //     return fetch(this.USERS+"/clients"+`/${credential}`, {
+    //         method:'POST',
+    //         headers:{'Content-Type':'application/json'},
+    //         body: JSON.stringify({
+    //             'password':password
+    //         })
+    //     }).then(response => {
+    //         if (response.status === 409){
+    //             return this.ALREADY_EXISTS;
+    //         }else if(response.status === 201){
+    //             this.user_id = response.json()['id'];
+    //             return this.LOGGED_IN;
+    //         }
+    //     });
+    // }
+    // static registerRestaurant(credential, password){
+    //     return fetch(this.USERS+"/restaurants"+`/${credential}`, {
+    //         method:'POST',
+    //         headers:{'Content-Type':'application/json'},
+    //         body: JSON.stringify({
+    //             'password':password
+    //         })
+    //     }).then(response => {
+    //         if (response.status === 409){
+    //             return this.ALREADY_EXISTS;
+    //         }else if(response.status === 201){
+    //             this.user_id = response.json()['id'];
+    //             return this.LOGGED_IN;
+    //         }
+    //     });
+    // }
 
     static register(user){
         return fetch(this.USERS+`/${credential}`, {
