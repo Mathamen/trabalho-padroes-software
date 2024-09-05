@@ -60,7 +60,6 @@ const CreateCliente = () => {
       }
     }
     alert("Usuário cadastrado com sucesso! Seja bem vindo ao VocêComida!");
-    alert(Mediator.user_id);
     // Limpar os campos
     setName('');
     setEmail('');
