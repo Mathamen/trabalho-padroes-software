@@ -25,10 +25,15 @@ const CreateCliente = () => {
     if(restaurante)//Criacao de um objeto restaurante
     {
       const newEntry = {
-        name, address, phone_number,cnpj,email
+        "name":name, 
+        "address":address, 
+        "phone_number": phone_number,
+        "cpf": cnpj,
+        "email": email,
+        "password": password
       };
 
-      const response = Mediator.registerRestaurant(newEntry, password);
+      const response = Mediator.register(newEntry);
       if(response === Mediator.ALREADY_EXISTS)
       {
         alert("Esse restaurante já foi registrado!");
@@ -39,9 +44,15 @@ const CreateCliente = () => {
     }
     else{
       const newEntry = {
-        name, address, phone_number,cpf,email
+        "name":name, 
+        "address":address, 
+        "phone_number": phone_number,
+        "cpf": cpf,
+        "email": email,
+        "password": password
       };
-      const response = Mediator.registerClient(newEntry, password);
+
+      const response = Mediator.register(newEntry);
       if(response === Mediator.ALREADY_EXISTS)
       {
         alert("Esse usuário já foi registrado!");
@@ -63,14 +74,14 @@ const CreateCliente = () => {
   const handleLogInSubmit = (e) => {
     e.preventDefault();
     
-    const response = Mediator.login(email, password);
+    const response = Mediator.login(emailLog, passwordLogin);
     if(response === Mediator.NOT_FOUND || response === Mediator.PASSWORD_INCORRECT)
     {
       alert("Usuário ou senha incorretos!");
       return;
     }
 
-    setEmail('');
+    setEmailLog('');
     setPasswordLogin('');
   }
   return (
@@ -187,7 +198,8 @@ const CreateCliente = () => {
               <input
                 className='form-control'
                 type="password"
-                
+                value={passwordLogin}
+                onChange={(e) => setPasswordLogin(e.target.value)}
               />
             </label>
           </div><br/>

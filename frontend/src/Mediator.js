@@ -89,6 +89,8 @@ export class Mediator{
     // }
 
     static register(user){
+        console.log("Teste");
+        console.log(user);
         return fetch(this.USERS, {
             method:'POST',
             headers:{'Content-Type':'application/json'},

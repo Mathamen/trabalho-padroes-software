@@ -41,7 +41,8 @@ def ping_response():
 def create_client(client: schemas.User, db: Session = Depends(get_db)):
     try:
         return crud.create_client(db=db, client=client)
-    except:
+    except RuntimeError as e:
+        print(e)
         raise HTTPException(status_code=409, detail="User already exists")
 
 
