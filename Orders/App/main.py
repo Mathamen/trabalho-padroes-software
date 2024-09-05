@@ -70,7 +70,7 @@ def prepare_order(order_id, auth:schemas.Authorization, db: Session = Depends(ge
         db.commit()
         db.refresh(db_order)
         return db_order
-    
+    raise HTTPException(status_code=404, detail="Order does not correspond")
 
 @app.put("/{order_id}/ship")
 def prepare_order(order_id, auth:schemas.Authorization, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
@@ -81,6 +81,7 @@ def prepare_order(order_id, auth:schemas.Authorization, background_tasks: Backgr
         db.refresh(db_order)
         background_tasks.add_task(deliver, order_id=order_id, db=db)
         return db_order
+    raise HTTPException(status_code=404, detail="Order does not correspond") # 
     
 async def deliver(order_id:int, db: Session = Depends(get_db)):
     await asyncio.sleep(15)
